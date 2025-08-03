@@ -1,109 +1,123 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>🐾Mi Mariaa💗</title>
-<style>
-  /* Fondo negro */
-  body {
-    margin: 0;
-    background: black;
-    overflow: hidden;
-    font-family: monospace;
-    color: #ff69b4; /* rosa fuerte */
-    user-select: none;
-    touch-action: manipulation;
-  }
-  /* Rositas */
-  .rose {
-    position: fixed;
-    top: -50px;
-    color: #ff69b4;
-    font-size: 20px;
-    animation-name: fall;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-  }
-  @keyframes fall {
-    to {
-      transform: translateY(110vh);
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🐾MIS PATITAS VELOCES💗💗</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      overflow: hidden;
+      font-family: monospace;
+      user-select: none;
     }
-  }
-  /* Mensaje "te amo" */
-  .message {
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 3em;
-    color: #ff1493;
-    pointer-events: none;
-    user-select: none;
-    animation: fadeUp 1.2s forwards;
-  }
-  @keyframes fadeUp {
-    0% {
-      opacity: 1;
-      transform: translate(-50%, -50%) translateY(0);
+
+    .rain {
+      position: absolute;
+      top: -50px;
+      color: #ff69b4;
+      font-size: 20px;
+      font-weight: bold;
+      animation-name: fall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
     }
-    100% {
-      opacity: 0;
-      transform: translate(-50%, -50%) translateY(-100px);
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+      }
     }
-  }
-  /* Título estilo monospace centrado arriba */
-  header {
-    position: fixed;
-    top: 10px;
-    width: 100%;
-    text-align: center;
-    font-size: 2em;
-    color: #ff1493;
-    user-select: none;
-  }
-</style>
+
+    .pulse {
+      position: absolute;
+      color: #ff1493;
+      font-size: 24px;
+      font-weight: bold;
+      animation: explode 1.5s forwards;
+    }
+
+    @keyframes explode {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(3);
+      }
+    }
+
+    header {
+      position: fixed;
+      top: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 2em;
+      color: #ff69b4;
+      z-index: 10;
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
 </head>
 <body>
 
-<header>🐾Mi Mariaa💗</header>
+<header>🐾MIS PATITAS VELOCES💗💗</header>
+
+<audio id="bgm" autoplay loop>
+  <source src="wildflower.mp3" type="audio/mp3">
+  Tu navegador no soporta audio HTML5.
+</audio>
 
 <script>
-  // Crear rositas cayendo
-  function createRose() {
-    const rose = document.createElement('div');
-    rose.className = 'rose';
-    rose.textContent = '🌹';
-    rose.style.left = Math.random() * 100 + 'vw';
-    rose.style.fontSize = (10 + Math.random() * 30) + 'px';
-    rose.style.animationDuration = (5 + Math.random() * 5) + 's';
-    document.body.appendChild(rose);
-    setTimeout(() => {
-      rose.remove();
-    }, 10000);
+  // Generar "TE AMO" cayendo desde arriba
+  function createRain() {
+    const drop = document.createElement("div");
+    drop.className = "rain";
+    drop.textContent = "TE AMO";
+    drop.style.left = Math.random() * 100 + "vw";
+    drop.style.fontSize = (10 + Math.random() * 20) + "px";
+    drop.style.animationDuration = (4 + Math.random() * 3) + "s";
+    document.body.appendChild(drop);
+    setTimeout(() => drop.remove(), 10000);
   }
 
-  // Crear varias rositas al iniciar
-  for(let i=0; i<30; i++) {
-    setTimeout(createRose, i * 300);
-  }
-  // Crear rositas cada poco tiempo para mantener la lluvia
-  setInterval(createRose, 500);
+  setInterval(createRain, 100);
 
-  // Mensaje "te amo" que aparece al tocar/clicar
-  function showMessage() {
-    const msg = document.createElement('div');
-    msg.className = 'message';
-    msg.textContent = 'te amo';
-    document.body.appendChild(msg);
-    setTimeout(() => {
-      msg.remove();
-    }, 1200);
+  // Crear múltiples "TE AMO" en expansión desde el punto tocado
+  function createExplosion(x, y) {
+    for (let i = 0; i < 20; i++) {
+      const msg = document.createElement("div");
+      msg.className = "pulse";
+      msg.textContent = "TE AMO";
+      msg.style.left = x + "px";
+      msg.style.top = y + "px";
+      msg.style.transform = `translate(-50%, -50%) rotate(${Math.random() * 360}deg)`;
+      document.body.appendChild(msg);
+      setTimeout(() => msg.remove(), 1500);
+    }
   }
 
-  // Detectar toque o click en pantalla
-  window.addEventListener('click', showMessage);
-  window.addEventListener('touchstart', showMessage);
+  window.addEventListener("click", (e) => {
+    createExplosion(e.clientX, e.clientY);
+  });
+
+  window.addEventListener("touchstart", (e) => {
+    const touch = e.touches[0];
+    createExplosion(touch.clientX, touch.clientY);
+  });
+
+  // Reproducir música automáticamente al cargar
+  window.addEventListener('load', () => {
+    const audio = document.getElementById("bgm");
+    audio.play().catch(() => {
+      document.body.addEventListener('click', () => audio.play(), { once: true });
+    });
+  });
 </script>
 
 </body>
