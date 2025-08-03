@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>🐾Mi Mariaa💗</title>
+<style>
+  /* Fondo negro */
+  body {
+    margin: 0;
+    background: black;
+    overflow: hidden;
+    font-family: monospace;
+    color: #ff69b4; /* rosa fuerte */
+    user-select: none;
+    touch-action: manipulation;
+  }
+  /* Rositas */
+  .rose {
+    position: fixed;
+    top: -50px;
+    color: #ff69b4;
+    font-size: 20px;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+  @keyframes fall {
+    to {
+      transform: translateY(110vh);
+    }
+  }
+  /* Mensaje "te amo" */
+  .message {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3em;
+    color: #ff1493;
+    pointer-events: none;
+    user-select: none;
+    animation: fadeUp 1.2s forwards;
+  }
+  @keyframes fadeUp {
+    0% {
+      opacity: 1;
+      transform: translate(-50%, -50%) translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) translateY(-100px);
+    }
+  }
+  /* Título estilo monospace centrado arriba */
+  header {
+    position: fixed;
+    top: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 2em;
+    color: #ff1493;
+    user-select: none;
+  }
+</style>
+</head>
+<body>
+
+<header>🐾Mi Mariaa💗</header>
+
+<script>
+  // Crear rositas cayendo
+  function createRose() {
+    const rose = document.createElement('div');
+    rose.className = 'rose';
+    rose.textContent = '🌹';
+    rose.style.left = Math.random() * 100 + 'vw';
+    rose.style.fontSize = (10 + Math.random() * 30) + 'px';
+    rose.style.animationDuration = (5 + Math.random() * 5) + 's';
+    document.body.appendChild(rose);
+    setTimeout(() => {
+      rose.remove();
+    }, 10000);
+  }
+
+  // Crear varias rositas al iniciar
+  for(let i=0; i<30; i++) {
+    setTimeout(createRose, i * 300);
+  }
+  // Crear rositas cada poco tiempo para mantener la lluvia
+  setInterval(createRose, 500);
+
+  // Mensaje "te amo" que aparece al tocar/clicar
+  function showMessage() {
+    const msg = document.createElement('div');
+    msg.className = 'message';
+    msg.textContent = 'te amo';
+    document.body.appendChild(msg);
+    setTimeout(() => {
+      msg.remove();
+    }, 1200);
+  }
+
+  // Detectar toque o click en pantalla
+  window.addEventListener('click', showMessage);
+  window.addEventListener('touchstart', showMessage);
+</script>
+
+</body>
+</html>
